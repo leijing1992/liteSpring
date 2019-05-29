@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.lite.framework.beans.BeanDefination;
 import org.lite.framework.beans.factory.BeanFactory;
 import org.lite.framework.beans.factory.support.DefaultBeanFactory;
+import org.lite.framework.core.io.XmlBeanDefinationReader;
 import org.lite.framework.exception.BeanDefinationException;
 
 /**
@@ -18,7 +19,9 @@ public class BeanFactoryTest {
 
     @Test
     public void beanFactoryTest(){
-        BeanFactory beanFactory = new DefaultBeanFactory("beans-v1.xml");
+        DefaultBeanFactory beanFactory = new DefaultBeanFactory();
+        XmlBeanDefinationReader reader = new XmlBeanDefinationReader(beanFactory);
+        reader.loadBeanDefination("beans-v1.xml");
         BeanDefination beanDefination = beanFactory.getBeanDefination("catService");
         Assert.assertEquals("org.lite.framework.service.v1.CatService",beanDefination.getBeanClassName());
         Object bean = beanFactory.getBean("catService");
@@ -28,7 +31,9 @@ public class BeanFactoryTest {
     @Test
     public void xmlParseErrorTest(){
         try {
-            BeanFactory beanFactory = new DefaultBeanFactory("beans-not-exist.xml");
+            DefaultBeanFactory beanFactory = new DefaultBeanFactory();
+            XmlBeanDefinationReader reader = new XmlBeanDefinationReader(beanFactory);
+            reader.loadBeanDefination("beans-not-exist.xml");
         }catch (BeanDefinationException e){
             return;
         }
